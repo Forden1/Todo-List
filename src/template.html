@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sadasd</title>
+    
+</head>
+<body >
+    <header>
+        <button class="icon-button" id="toggleButton"> <!-- Icon as button -->
+            <img src="../images/menu.png" alt="Icon" style="height: 40px; width: auto; ">
+        </button>
+        <h1>TITLE</h1>
+        <div class="helping-div">ghghjghfg</div>
+        
+    </header>
+    
+        <div id="side" >
+            <div class="home tile-card">
+                <h2>Home</h2>
+                <div class="tile selected" id="allTasks">
+                    
+                    <div data-name>All Tasks</div>
+                </div>
+                <div class="tile" id="today">
+                   
+                    <div data-name>Today</div>
+                </div>
+                <div class="tile" id="thisWeek">
+                   
+                    <div data-name>Next 7 Days</div>
+                </div>
+                <div class="tile" id="important">
+                    
+                    <div data-name>Important</div>
+                </div>
+                
+            </div>
+            <div class="projects tile-card">
+                <h2>Projects</h2>
+                <div id="projects-list">
+                    <!-- Existing projects will be listed here -->
+                </div>
+            
+                <!-- Form to add new project -->
+                <div class="add-project-form" id="addProjectForm">
+                    <div class="project-tile">
+                    
+                        <input type="text" id="projectNameInput" placeholder="Enter Project Name">
+                    </div>
+                    <div class="form-buttons">
+                        <button id="addProjectButton" class="add-btn">Add</button>
+                        <button id="cancelProjectButton" class="cancel-btn">Cancel</button>
+                    </div>
+                </div>
+            
+                <!-- Add Project Button -->
+                <button id="showAddProjectForm" class="add-project-btn">
+                    <span>+</span> Add Project
+                </button>
+            </div>
+        </div>    
+        <div id="main" >
+                <div id="title"></div>
+        <dialog>
+            <form id="listForm"  autocomplete="off">
+                <div class="inputField">
+                    <label>Title:</label>
+                    <input type="text" id="listInput" placeholder="What to do?">
+                    <label>Details(optional):</label>
+                    <textarea type="text" id="listInputDetail" placeholder="eg: I'm just gonna procrastinate, aren't I?" wrap="hard"></textarea>
+                    <label>Date:</label>
+                
+                    <input type="date"  id="dateInput"  oninput="dateShit()">
+                    <div class="formButtons">
+                        <input type="submit" class="listSubmitBtn" value="Add">
+                        <input type="button" class="listCancelBtn" value="Cancel">
+                    </div>
+                </div>
+            </form>
+        </dialog>
+            <button id="showbutton">click me bitch ass nigga</button>
+     </div>
+</html>
