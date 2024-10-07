@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>sadasd</title>
-    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
 </head>
 <body >
     <header>
@@ -24,8 +25,12 @@
                     <div data-name>All Tasks</div>
                 </div>
                 <div class="tile" id="today">
+                    
                    
-                    <div data-name>Today</div>
+                    <div data-name> 
+
+
+                        Today</div>
                 </div>
                 <div class="tile" id="thisWeek">
                    
@@ -63,7 +68,7 @@
         </div>    
         <div id="main" >
                 <div id="title"></div>
-        <dialog>
+        <dialog id="taskDialog">
             <form id="listForm"  autocomplete="off">
                 <div class="inputField">
                     <label>Title:</label>
@@ -72,14 +77,26 @@
                     <textarea type="text" id="listInputDetail" placeholder="eg: I'm just gonna procrastinate, aren't I?" wrap="hard"></textarea>
                     <label>Date:</label>
                 
-                    <input type="date"  id="dateInput"  oninput="dateShit()">
+                    <input type="date"  id="dateInput"  >
                     <div class="formButtons">
-                        <input type="submit" class="listSubmitBtn" value="Add">
-                        <input type="button" class="listCancelBtn" value="Cancel">
+                        <input type="submit" id="listSubmitBtn" value="Add">
+                        <input type="button" id="listCancelBtn" value="Cancel">
                     </div>
                 </div>
             </form>
+
         </dialog>
+        <dialog id="deleteDialog">
+            <div class="deleteDiv">
+                <h2>Are you sure you want to Delete this TASK</h2>
+                <div class="deleteDialogButtons">
+                    <input type="button" id="deleteBtn" value="Yes">
+                    <input type="button" id="noDeleteBtn" value="Cancel">
+
+                </div>
+            </div>
+        </dialog>
+            <div id="taskscon"></div>
             <button id="showbutton">click me bitch ass nigga</button>
      </div>
 </html>
