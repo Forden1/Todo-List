@@ -116,6 +116,10 @@ header {
     width: 80%;
     padding:  20px;
     padding-top: 5px;
+    display: flex;
+    flex-direction: column;
+    text-wrap: nowrap;
+    gap: 5px
 }
 
 .tile-card h2 {
@@ -228,6 +232,33 @@ width: 100%;
     color: var(--textColor);
     border: 3px solid black;
 }
+#deleteBtn:hover{
+    background-color: red;
+    transition: 0.5s;
+
+}
+button{
+    position: relative;
+    cursor: pointer;
+
+    
+
+}
+button:active {
+    box-shadow: 0px 0px 0px 0px rgba(89, 109, 72, 0.3);
+    top: 5px;
+}
+input[type="button"]{
+    position: relative;
+    cursor: pointer;
+}
+
+input[type="button"]:active {
+    box-shadow: 0px 0px 0px 0px rgba(89, 109, 72, 0.3);
+    top: 5px;
+}
+
+
 input[type="date"] {
     color: #999; /* Default color for empty input */
 }
@@ -253,9 +284,9 @@ input[type="date"] {
     
 
 
-    p,h3{
+    p{  
         margin: 0;
-        padding: 0;
+        padding-top: 10px;
     }
 }
 .hidden{
@@ -317,8 +348,9 @@ dialog::backdrop{
 #deleteDialog:modal{
     max-width: 30%;
 }
-.strikethrough {
+.strikethrough ,.task-title.strikethrough{
     text-decoration: line-through; /* This applies the strikethrough effect */
+    text-shadow: none;
     color: gray; /* Optional: Change color to gray for completed tasks */
 }
 .completed{
@@ -326,4 +358,29 @@ dialog::backdrop{
 }
 .staah{
     color: red;
+}
+.goldTask{
+    background-color: rgba(218, 165, 32, 0.445);
+}
+
+.task-title{
+    text-shadow: rgb(0, 0, 0) 5px 0px 0px, rgb(0, 0, 0) 4.90033px 0.993347px 0px, rgb(0, 0, 0) 4.60531px 1.94709px 0px, rgb(0, 0, 0) 4.12668px 2.82321px 0px, rgb(0, 0, 0) 3.48353px 3.58678px 0px, rgb(0, 0, 0) 2.70151px 4.20736px 0px, rgb(0, 0, 0) 1.81179px 4.6602px 0px, rgb(0, 0, 0) 0.849836px 4.92725px 0px, rgb(0, 0, 0) -0.145998px 4.99787px 0px, rgb(0, 0, 0) -1.13601px 4.86924px 0px, rgb(0, 0, 0) -2.08073px 4.54649px 0px, rgb(0, 0, 0) -2.94251px 4.04248px 0px, rgb(0, 0, 0) -3.68697px 3.37732px 0px, rgb(0, 0, 0) -4.28444px 2.57751px 0px, rgb(0, 0, 0) -4.71111px 1.67494px 0px, rgb(0, 0, 0) -4.94996px 0.7056px 0px, rgb(0, 0, 0) -4.99147px -0.291871px 0px, rgb(0, 0, 0) -4.83399px -1.27771px 0px, rgb(0, 0, 0) -4.48379px -2.2126px 0px, rgb(0, 0, 0) -3.95484px -3.05929px 0px, rgb(0, 0, 0) -3.26822px -3.78401px 0px, rgb(0, 0, 0) -2.4513px -4.35788px 0px, rgb(0, 0, 0) -1.53666px -4.75801px 0px, rgb(0, 0, 0) -0.560763px -4.96845px 0px, rgb(0, 0, 0) 0.437495px -4.98082px 0px, rgb(0, 0, 0) 1.41831px -4.79462px 0px, rgb(0, 0, 0) 2.34258px -4.41727px 0px, rgb(0, 0, 0) 3.17346px -3.86382px 0px, rgb(0, 0, 0) 3.87783px -3.15633px 0px, rgb(0, 0, 0) 4.4276px -2.32301px 0px, rgb(0, 0, 0) 4.80085px -1.39708px 0px, rgb(0, 0, 0) 4.98271px -0.415447px 0px;
+    padding-bottom: 10px;
+    margin: 0;
+}
+
+
+.star_icon,.check_icon,.delete_icon{
+    position: relative;
+    cursor: pointer;
+    padding: 15px;
+}
+.star_icon:active,.check_icon:active,.delete_icon:active{
+    box-shadow: 0px 0px 0px 0px rgba(89, 109, 72, 0.3);
+    bottom: 10px;
+}
+.completed.completed{
+    background-color: darkgreen;
+
+
 }

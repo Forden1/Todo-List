@@ -27,6 +27,8 @@ function updateSelectedTile(clickedTile, tasksbanner) {
         filterTasks('thisWeek'); // Show tasks due in the next 7 days
     } else if(tileId==="important"){
         filterTasks("important");
+    } else if(tileId==="completed"){
+        filterTasks("completed");
     }
 }
 
@@ -92,9 +94,54 @@ function hideDeleteModal(){
     
 }
 
-function deleteTask(){
 
+//making tehm affect the actual array
+function deleteTaskFromList(taskTitle) {
+    taskList = taskList.filter(task => task.title !== taskTitle);
+    saveTasksToLocalStorage(); 
 }
+
+function toggleTaskImportance(taskTitle) {
+    const task = taskList.find(t => t.title === taskTitle);
+    if (task) {
+        task.important = !task.important;  // Toggle importance
+        saveTasksToLocalStorage();
+    }
+}
+function toggleTaskCompleted(taskTitle) {
+    const task = taskList.find(t => t.title === taskTitle);
+    if (task) {
+        task.completed = !task.completed;  // Toggle importance
+        saveTasksToLocalStorage();
+    }
+}
+
+ //local storage handeling 
+ function saveTasksToLocalStorage() {
+    console.log("Saving tasks to local storage:", taskList);
+    localStorage.setItem('tasks', JSON.stringify(taskList));
+}
+
+function loadTasksFromLocalStorage() {
+    const storedTasks = localStorage.getItem('tasks');
+    if (storedTasks) {
+        taskList = JSON.parse(storedTasks);
+        console.log("Loaded tasks from local storage:", taskList);
+
+        const tasksContainer = document.getElementById('taskscon');
+        tasksContainer.innerHTML = '';
+
+        taskList.forEach(task => {
+            console.log("Rendering task:", task);
+            renderTask(task);
+        });
+    }
+}
+
+
+
+
+
 
 
 function handleFormSubmit(event) {
@@ -140,27 +187,7 @@ function validateFormData(taskData) {
 
 // Function to create a task object
 // Prerendered task objects
-let taskList = [
-    {
-        title: 'Complete Project Proposal',
-        details: 'Prepare and submit the final draft of the project proposal to the team.',
-        dueDate: '2024-10-07', // Set the due date
-        important:false
-    },
-    {
-        title: 'Buy Groceries',
-        details: 'Get milk, eggs, and vegetables from the store.',
-        dueDate: '2024-10-05',
-        important:true
-    },
-    {
-        title: 'Read JavaScript Book',
-        details: 'Read at least two chapters from the new JS book.',
-        dueDate: '2024-10-10',
-        important:true
-
-    }
-];
+let taskList = [];
 // Array to store all tasks
 
 
@@ -168,13 +195,16 @@ function createTask(taskData) {
     const task = {
         title: taskData.title,
         details: taskData.details || 'No details provided',
-        dueDate: taskData.dueDate, // Store the due date
-        important: taskData.important
+        dueDate: taskData.dueDate || 'No date set',
+        important: taskData.important || false,
+        completed: false
     };
     
     taskList.push(task); // Store the task in the array
+    saveTasksToLocalStorage(); // Save to local storage immediately after creating a task
     return task;
 }
+
 
 // function for icon genration 
 const createSpanIcon = (name) => {
@@ -207,17 +237,32 @@ function renderTask(task) {
         <p><strong>Details:</strong> ${task.details}</p>
         <p><strong>Due Date:</strong> ${task.dueDate}</p>
     `;
+    bigLeft.appendChild(leftTask);
+    taskDiv.appendChild(bigLeft);
 
     righDiv.classList.add("rightTask")
+    const taskTitle = leftTask.querySelector('.task-title');
+    const taskDetails = leftTask.querySelector('p');
 
-    
     const checkOutline=createSpanIcon("check_circle_outline")
     const starOutline = createSpanIcon("star_outline");
     const deleteOutline=createSpanIcon("delete_outline")
     checkOutline.classList.add("check_icon")
     starOutline.classList.add("star_icon")
     deleteOutline.classList.add("delete_icon")
-    
+    if (task.important===true){
+        toggleIcon(starOutline, "star", "star_outline");
+        taskDiv.classList.add("goldTask")
+
+
+    }
+     if(task.completed===true){
+        toggleIcon(checkOutline, "check_circle", "check_circle_outline"); 
+        taskDiv.classList.toggle("completed")  
+        taskTitle.classList.toggle('strikethrough');
+        taskDetails.classList.toggle('strikethrough');
+
+    }
 
 
     bigLeft.appendChild(checkOutline)
@@ -254,8 +299,12 @@ function filterTasks(filter){
         else if (filter==="thisWeek"){
             includeTask=(task.dueDate >= today && task.dueDate <= nextWeekDate)
         }
-        else if (filter==="important")
-            includeTask=(task.important===true)
+        else if (filter==="important"){
+            includeTask=(task.important===true&&task.completed===false)
+        }
+        else if (filter==="completed"){
+            includeTask=(task.completed===true)
+        }
     if(includeTask){
         renderTask(task)
     }
@@ -267,6 +316,12 @@ function filterTasks(filter){
 
 // Main function to initialize all event listeners
 function initializeApp() {
+    //load fron localc storgae
+    loadTasksFromLocalStorage();
+    
+
+
+
     // Select the tasks container and append it to the main section
     const current = document.querySelector(".selected").innerText;
 
@@ -335,6 +390,8 @@ function initializeApp() {
         if (event.target && event.target.id === "deleteBtn") {
             // Check if we have a task to delete
             if (taskToDelete) {
+                const taskTitle = taskToDelete.querySelector('.task-title').innerText; // Get task title
+                deleteTaskFromList(taskTitle); 
                 taskToDelete.remove(); // Remove the task from the DOM
                 console.log("Task deleted"); // Optional: Log confirmation
                 taskToDelete = null; // Reset taskToDelete for next time
@@ -372,11 +429,12 @@ function initializeApp() {
             
             if (taskDiv) {
                 
-                const taskTitle = taskDiv.querySelector('.task-title'); 
+                const taskTitle = taskDiv.querySelector('.task-title');
+                const taskTitleCheck = taskDiv.querySelector('.task-title').innerText;  
                 const taskDetails = taskDiv.querySelector('p');
                 
                 taskTitle.classList.toggle('strikethrough');
-                
+                toggleTaskCompleted(taskTitleCheck)
                 if (taskDetails) {
                     taskDetails.classList.toggle('strikethrough');
                 } else {
@@ -395,7 +453,11 @@ function initializeApp() {
     document.getElementById("taskscon").addEventListener("click", function(event) {
         if (event.target && event.target.classList.contains("star_icon")) {
             toggleIcon(event.target, "star", "star_outline");  
+            const taskDiv = event.target.closest('.task');
+            taskDiv.classList.toggle("goldTask")
+            const taskTitle = taskDiv.querySelector('.task-title').innerText; // Get the task title
 
+            toggleTaskImportance(taskTitle)
     
         }
     });
@@ -403,9 +465,45 @@ function initializeApp() {
 
 
     // testing shit 
-    taskList.forEach(task => renderTask(task)); 
+    
 
 }
+
+// Add some fake tasks for testing
+function addFakeTasks() {
+    const fakeTasks = [
+        {
+            title: "Complete Project Proposal",
+            details: "Prepare and submit the final draft of the project proposal to the team.",
+            dueDate: "2024-10-08",
+            important: true,
+            completed: false,
+        },
+        {
+            title: "Buy Groceries",
+            details: "Get milk, eggs, and vegetables from the store.",
+            dueDate: "2024-10-05",
+            important: false,
+            completed: false,
+        },
+        {
+            title: "Read JavaScript Book",
+            details: "Read at least two chapters from the new JS book.",
+            dueDate: "2024-10-10",
+            important: false,
+            completed: false,
+        }
+    ];
+
+    // Add each fake task to the taskList and render it
+    fakeTasks.forEach(task => {
+        taskList.push(task); // Add to the taskList
+        renderTask(task); // Render the task
+    });
+}
+
+// Call the function to add fake tasks
+
 
 // Initialize the app
 initializeApp();
